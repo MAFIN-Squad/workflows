@@ -1,0 +1,25 @@
+name: Package Release
+
+on:
+  workflow_call:
+
+env:
+  PACKAGE_OUPUT_DIRECTORY: ${{ github.workspace }}/output
+
+jobs:
+  package-release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Pack solution
+      run: dotnet pack -o ${{ env.PACKAGE_OUPUT_DIRECTORY }}
+
+    - name: Publish to NuGet
+      run: dotnet nuget push ${{ env.PACKAGE_OUPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }}
