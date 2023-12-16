@@ -2,6 +2,9 @@ name: Package Release
 
 on:
   workflow_call:
+    secrets:
+      nuget-key:
+        required: true # Required until https://github.com/github/roadmap/issues/636 is implemented
 
 env:
   PACKAGE_OUPUT_DIRECTORY: ${{ github.workspace }}/output
@@ -22,4 +25,4 @@ jobs:
       run: dotnet pack -o ${{ env.PACKAGE_OUPUT_DIRECTORY }}
 
     - name: Publish to NuGet
-      run: dotnet nuget push ${{ env.PACKAGE_OUPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }}
+      run: dotnet nuget push ${{ env.PACKAGE_OUPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.nuget-key }}
