@@ -2,6 +2,9 @@ name: Package Test
 
 on:
   workflow_call:
+    secrets:
+      codecov-token:
+        required: true # Required until https://github.com/github/roadmap/issues/636 is implemented
 
 env:
   CONFIGURATION: Release
@@ -29,3 +32,5 @@ jobs:
 
     - name: Upload code coverage results
       uses: codecov/codecov-action@v4
+      env:
+        CODECOV_TOKEN: ${{ secrets.codecov-token }}
